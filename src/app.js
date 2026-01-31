@@ -1,19 +1,22 @@
-const express = require('express')
+const express = require("express")
 
 const app = express()
 
-app.use("/",(req, res)=>{
-res.send("Ansh Gupta")
+
+
+app.get("/user", (req, res)=>{
+res.send({firstName:"Satya", lastName:"Prakash"})
 })
 
-app.use("/test",(req, res)=>{
-res.send("Hello from the server")
+
+app.post("/user",(req, res)=>{
+res.send("Data successfully saved to database")
 })
 
-app.use("/hello",(req, res)=>{
-res.send("Hello Hello")
+app.delete("/user",(req, res)=>{
+res.send("User Deleted successfully!!")
 })
 
 app.listen(3000, ()=>{
-    console.log("Server is successfully listening on port 3000")
+    console.log("Server is successfully running on port 3000")
 })
