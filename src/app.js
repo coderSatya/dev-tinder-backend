@@ -1,22 +1,37 @@
-const express = require("express")
+const express = require("express");
 
-const app = express()
+const app = express();
+
+// url => http://localhost:3000/user?userId=101&name=satya      query means ? 
+// app.get("/user", (req, res) => {
+// console.log(req.query);
+//   res.send({ firstName: "Satya", lastName: "Prakash" });
+// });
+// OUTPUT => // { userId: '101', name: 'satya' }
+
+
+// url => http://localhost:3000/user/satya/testname/701/software-engineer  params means :
+// app.get("/user/:name/:password/:id/:desgination", (req, res) => {
+// console.log(req.params);
+//   res.send({ firstName: "Satya", lastName: "Prakash" });
+// });
+// OUTPUT=>
+// [Object: null prototype] {
+//   name: 'satya',
+//   password: 'testname',
+//   id: '701'
+// }
 
 
 
-app.get("/user", (req, res)=>{
-res.send({firstName:"Satya", lastName:"Prakash"})
-})
+app.post("/user", (req, res) => {
+  res.send("Data successfully saved to database");
+});
 
+app.delete("/user", (req, res) => {
+  res.send("User Deleted successfully!!");
+});
 
-app.post("/user",(req, res)=>{
-res.send("Data successfully saved to database")
-})
-
-app.delete("/user",(req, res)=>{
-res.send("User Deleted successfully!!")
-})
-
-app.listen(3000, ()=>{
-    console.log("Server is successfully running on port 3000")
-})
+app.listen(3000, () => {
+  console.log("Server is successfully running on port 3000");
+});
