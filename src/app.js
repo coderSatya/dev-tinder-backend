@@ -29,15 +29,31 @@ const app = express();
 //   res.send("User Deleted successfully!!");
 // });
 
-app.get("/user", (req, res, next) => {
-  console.log("I am handling route 1");
-  res.send("I am response");
-  next();
+// app.get("/user", (req, res, next) => {
+//   console.log("I am handling route 1");
+//   res.send("I am response");
+//   next();
+// });
+
+// app.get("/user", (req, res) => {
+//   console.log("I am handling route 1");
+// //   res.send("I am response 2");
+// });
+
+const { adminAuth, userAuth } = require("./middlewares/auth");
+
+// app.use("/admin", adminAuth);
+
+app.get("/user", userAuth, (req, res) => {
+  res.send("All Data fetched");
 });
 
-app.get("/user", (req, res) => {
-  console.log("I am handling route 1");
-//   res.send("I am response 2");
+app.get("/admin/getAllData", adminAuth, (req, res) => {
+  res.send("All Data fetched");
+});
+
+app.delete("/admin/getAllData", (req, res) => {
+  res.send("User get deleted");
 });
 
 app.listen(3000, () => {
