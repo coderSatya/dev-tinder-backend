@@ -44,6 +44,15 @@ const { adminAuth, userAuth } = require("./middlewares/auth");
 
 // app.use("/admin", adminAuth);
 
+// app.use("/", (req, res, next)=>{}) if 3 correct order pattern 
+// app.use("/", (err, req, res, next)=>{}) if 4 correct order pattern 
+
+app.use("/", (err, req, res, next)=>{
+    if(err){
+        res.status(500).send("something went wrong")
+    }
+})
+
 app.get("/user", userAuth, (req, res) => {
   res.send("All Data fetched");
 });
