@@ -1,70 +1,36 @@
 const express = require("express");
-
+const connectDB = require("./config/database");
 const app = express();
+const cors = require("cors");
 
-// url => http://localhost:3000/user?userId=101&name=satya      query means ?
-// app.get("/user", (req, res) => {
-// console.log(req.query);
-//   res.send({ firstName: "Satya", lastName: "Prakash" });
-// });
-// OUTPUT => // { userId: '101', name: 'satya' }
+const cookieParser = require("cookie-parser");
 
-// url => http://localhost:3000/user/satya/testname/701/software-engineer  params means :
-// app.get("/user/:name/:password/:id/:desgination", (req, res) => {
-// console.log(req.params);
-//   res.send({ firstName: "Satya", lastName: "Prakash" });
-// });
-// OUTPUT=>
-// [Object: null prototype] {
-//   name: 'satya',
-//   password: 'testname',
-//   id: '701'
-// }
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  }),
+);
+app.use(express.json());
+app.use(cookieParser());
 
-// app.post("/user", (req, res) => {
-//   res.send("Data successfully saved to database");
-// });
+const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
+const requestRouter = require("./routes/request");
+const userRouter = require("./routes/user");
 
-// app.delete("/user", (req, res) => {
-//   res.send("User Deleted successfully!!");
-// });
+app.use("/", authRouter);
+app.use("/", profileRouter);
+app.use("/", requestRouter);
+app.use("/", userRouter);
 
-// app.get("/user", (req, res, next) => {
-//   console.log("I am handling route 1");
-//   res.send("I am response");
-//   next();
-// });
-
-// app.get("/user", (req, res) => {
-//   console.log("I am handling route 1");
-// //   res.send("I am response 2");
-// });
-
-const { adminAuth, userAuth } = require("./middlewares/auth");
-
-// app.use("/admin", adminAuth);
-
-// app.use("/", (req, res, next)=>{}) if 3 correct order pattern 
-// app.use("/", (err, req, res, next)=>{}) if 4 correct order pattern 
-
-app.use("/", (err, req, res, next)=>{
-    if(err){
-        res.status(500).send("something went wrong")
-    }
-})
-
-app.get("/user", userAuth, (req, res) => {
-  res.send("All Data fetched");
-});
-
-app.get("/admin/getAllData", adminAuth, (req, res) => {
-  res.send("All Data fetched");
-});
-
-app.delete("/admin/getAllData", (req, res) => {
-  res.send("User get deleted");
-});
-
-app.listen(3000, () => {
-  console.log("Server is successfully running on port 3000");
-});
+connectDB()
+  .then(() => {
+    console.log("Database connection established");
+    app.listen(7777, () => {
+      console.log("Server is successfully running on port 3000");
+    });
+  })
+  .catch((err) => {
+    console.log("Database cannot be connected!!");
+  });
