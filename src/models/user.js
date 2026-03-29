@@ -42,8 +42,8 @@ const userSchema = new mongoose.Schema(
     gender: {
       type: String,
       validate(value) {
-        if (!["male", "female", "others"].includes(value)) {
-          throw new Error("Gender data is not valid");
+        if (!["male", "female", "other", "others"].includes(value.toLowerCase())) {
+          throw new Error("Gender must be either male, female, or other");
         }
       },
     },
@@ -51,8 +51,8 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       validate(value) {
-        if (!validator.isURL(value)) {
-          throw new Error("Invalid Photo URL: " + value);
+        if (!validator.isURL(value) && !validator.isDataURI(value)) {
+          throw new Error("Invalid photo: Please provide a valid URL or image data");
         }
       },
     },
